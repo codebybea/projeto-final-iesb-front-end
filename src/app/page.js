@@ -1,95 +1,79 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import Carrosel from "@/components/Carrosel";
+import Pagina from "@/components/Pagina";
+import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
+import { FaPlusCircle, FaRegHeart } from "react-icons/fa";
+
+const animais = JSON.parse(localStorage.getItem("animais")) || [];
+
+export default function homePage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <Pagina></Pagina>
+      <Carrosel></Carrosel>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      {/* Animais */}
+
+      <Container className="text-end mb-2 pt-5">
+        <h1 className="text-center mb-4 pt-5">Adote um Amiguinho!</h1>
+        <Button variant="success" href="/animais/form">
+          <FaPlusCircle /> Cadastrar Animal
+        </Button>
+      </Container>
+      <Container className="text-center py-5 img">
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {animais.map((animal) => (
+            <Col key={animal.id}>
+              <Card
+                className="mb-5 img-hover"
+                style={{
+                  borderRadius: "50px",
+                  transition: "transform 0.3s ease-in-out",
+                }}
+              >
+                <Card.Img
+                  style={{
+                    borderRadius: "50px",
+                  }}
+                  className="card-img-top"
+                  variant="top"
+                  src={animal.foto}
+                />
+                <Card.Body className=" mb-2">
+                  <Card.Title>{animal.nome}</Card.Title>
+                  <Card.Text>
+                    <p>
+                      {animal.cidade}, {animal.estado}
+                    </p>
+                  </Card.Text>
+                  <Button
+                    className="btn-purple"
+                    href={`/adotadores/form?animalId=${animal.id}`}
+                  >
+                    <FaRegHeart /> Adotar
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+
+        <section className="py-5">
+          {/* Sobre PETZ */}
+          <h1 className="mt-5 mb-2 ">Sobre o patinhas</h1>
+          <Image src="/imgs/04.png"></Image>
+          <p>
+            Nossa missão é construir um mundo onde todos os animais tenham um
+            lar amoroso e seguro. <br></br> Acreditamos que cada pet merece uma
+            segunda chance e que a adoção é a melhor forma de salvar vidas.{" "}
+            <br></br> Nosso compromisso é conectar animais abandonados a
+            famílias responsáveis, promovendo o bem-estar animal <br></br> e a
+            conscientização sobre a importância da castração e da adoção
+            responsável.
+          </p>
+        </section>
+      </Container>
+    </>
   );
 }
